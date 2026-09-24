@@ -87,4 +87,15 @@ class TaskController extends Controller
             ->route('tasks.index')
             ->with('success', 'Task deleted successfully.');
     }
+
+    public function updateStatus(Task $task)
+    {
+        $task->update([
+            'status' => $task->status === 'Pending'
+                ? 'Completed'
+                : 'Pending'
+        ]);
+
+        return back();
+    }
 }

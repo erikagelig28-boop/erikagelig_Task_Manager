@@ -1,232 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Personal Task Manager</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ $title ?? 'Task Manager' }}</title>
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f1f3f4;
-            color: #202124;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #F7FAF8;
+            color: #1F2937;
         }
 
-        /* Top bar */
-        nav {
-            height: 64px;
-            background: white;
-            border-bottom: 1px solid #dadce0;
-            display: flex;
-            align-items: center;
-            padding: 0 25px;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-            color: #0891b2;
-            margin-right: 40px;
-        }
-
-        nav a {
-            color: #5f6368;
+        a {
             text-decoration: none;
-            margin-right: 25px;
-            font-size: 14px;
+            color: inherit;
         }
 
-        nav a:hover {
-            color: #0891b2;
-        }
-
-        /* Main page */
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .page {
-            background: white;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            padding: 35px;
-            min-height: 500px;
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 400;
-            color: #202124;
-            margin-top: 0;
-        }
-
-        h2 {
-            font-size: 20px;
-            font-weight: 400;
-            color: #202124;
-        }
-
-        h3 {
-            color: #202124;
-        }
-
-        /* Buttons */
-        .button,
-        button {
-            background: #06b6d4;
-            color: white;
-            border: none;
-            padding: 9px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .button:hover,
-        button:hover {
-            background: #0891b2;
-        }
-
-        .delete {
-            background: #dc3545;
-        }
-
-        .delete:hover {
-            background: #b02a37;
-        }
-
-        .cancel {
-            color: #5f6368;
-            text-decoration: none;
-            margin-left: 15px;
-        }
-
-        /* Dashboard cards */
-        .stats {
-            display: flex;
-            gap: 15px;
-            margin: 25px 0;
-        }
-
-        .stat {
-            flex: 1;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            padding: 20px;
-            background: white;
-        }
-
-        .stat-title {
-            color: #5f6368;
-            font-size: 14px;
-        }
-
-        .number {
-            font-size: 28px;
-            color: #0891b2;
-            margin-top: 8px;
-        }
-
-        /* Task cards */
-        .task {
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 15px;
-        }
-
-        .task h3 {
-            margin-top: 0;
-            font-size: 18px;
-        }
-
-        .task p {
-            color: #5f6368;
-        }
-
-        /* Forms */
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 14px;
-            color: #3c4043;
-        }
-
+        button,
         input,
         textarea,
         select {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #dadce0;
-            border-radius: 5px;
-            font-family: Arial, sans-serif;
+            font-family: inherit;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 72px;
+            background: #FFFFFF;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            padding: 0 45px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: bold;
+            color: #166534;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #16A34A;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav a {
+            padding: 10px 15px;
+            border-radius: 8px;
             font-size: 14px;
+            color: #6B7280;
+            transition: 0.2s;
         }
 
-        input:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border: 2px solid #06b6d4;
+        .nav a:hover {
+            background: #DCFCE7;
+            color: #166534;
         }
 
-        textarea {
-            height: 120px;
-            resize: vertical;
+        .nav a.active {
+            background: #DCFCE7;
+            color: #166534;
+            font-weight: bold;
         }
 
-        .form-buttons {
-            margin-top: 25px;
+        /* MAIN */
+
+        .main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 30px;
         }
 
-        /* Messages */
-        .success {
-            background: #e0f7fa;
-            border: 1px solid #67e8f9;
-            color: #0e7490;
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        .error {
-            background: #fee2e2;
-            color: #b91c1c;
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .page-title {
+            font-size: 30px;
+            font-weight: bold;
+            color: #1F2937;
         }
 
-        /* Mobile */
+        .page-subtitle {
+            color: #6B7280;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .add-button {
+            background: #16A34A;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .add-button:hover {
+            background: #166534;
+        }
+
+        /* RESPONSIVE */
+
         @media (max-width: 700px) {
-            .stats {
+
+            .navbar {
+                padding: 0 18px;
+            }
+
+            .brand span {
+                display: none;
+            }
+
+            .nav {
+                gap: 2px;
+            }
+
+            .nav a {
+                padding: 9px 8px;
+                font-size: 12px;
+            }
+
+            .main {
+                padding: 25px 18px;
+            }
+
+            .topbar {
+                align-items: flex-start;
                 flex-direction: column;
-            }
-
-            nav {
-                padding: 0 15px;
-            }
-
-            .logo {
-                margin-right: 20px;
-            }
-
-            nav a {
-                margin-right: 10px;
-            }
-
-            .page {
-                padding: 20px;
+                gap: 18px;
             }
         }
     </style>
@@ -234,36 +169,52 @@
 
 <body>
 
-<nav>
-    <div class="logo">
-        Task Manager
-    </div>
+    <header class="navbar">
 
-    <a href="{{ route('dashboard') }}">
-        Dashboard
-    </a>
+        <a href="{{ route('dashboard') }}" class="brand">
 
-    <a href="{{ route('tasks.index') }}">
-        Tasks
-    </a>
+            <div class="brand-icon">
+                ✓
+            </div>
 
-    <a href="{{ route('tasks.create') }}">
-        Add Task
-    </a>
-</nav>
+            <span>
+                Task Manager
+            </span>
 
-<div class="container">
+        </a>
 
-    @if (session('success'))
-        <div class="success">
-            {{ session('success') }}
-        </div>
-    @endif
+        <nav class="nav">
 
-    @yield('content')
+            <a
+                href="{{ route('dashboard') }}"
+                class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+            >
+                Dashboard
+            </a>
 
-</div>
+            <a
+                href="{{ route('tasks.create') }}"
+                class="{{ request()->routeIs('tasks.create') ? 'active' : '' }}"
+            >
+                Add Task
+            </a>
+
+            <a
+                href="{{ route('tasks.index') }}"
+                class="{{ request()->routeIs('tasks.index') ? 'active' : '' }}"
+            >
+                Tasks
+            </a>
+
+        </nav>
+
+    </header>
+
+    <main class="main">
+
+        @yield('content')
+
+    </main>
 
 </body>
 </html>
-
