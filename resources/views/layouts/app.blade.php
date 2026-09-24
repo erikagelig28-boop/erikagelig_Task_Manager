@@ -173,9 +173,7 @@
 
         <a href="{{ route('dashboard') }}" class="brand">
 
-            <div class="brand-icon">
-                ✓
-            </div>
+            
 
             <span>
                 Task Manager
